@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-  <title>GPU Stress Test Demo MAX</title>
+  <title>🔥GPU Super Stress MAX</title>
   <style>
     html, body {
       margin: 0; padding: 0; overflow: hidden;
@@ -17,14 +17,11 @@
   </style>
 </head>
 <body>
-<canvas id="glcanvas" width="1536" height="1536"></canvas>
+<canvas id="glcanvas" width="2048" height="2048"></canvas>
 <script>
   const canvas = document.getElementById('glcanvas');
   const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
-
-  if (!gl) {
-    alert('WebGL not supported');
-  }
+  if (!gl) alert('WebGL not supported');
 
   const vertexShaderSource = `
     attribute vec3 position;
@@ -35,7 +32,6 @@
 
   const fragmentShaderSource = `
     precision highp float;
-
     uniform float time;
     uniform vec2 resolution;
 
@@ -64,9 +60,9 @@
     float fbm(vec2 p) {
       float f = 0.0;
       float w = 0.5;
-      for (int i=0; i<1000; i++) {
+      for (int i=0; i<8; i++) {
         f += w * noise(p);
-        p *= 8.0;
+        p *= 2.0;
         w *= 0.5;
       }
       return f;
@@ -76,29 +72,31 @@
       float sum = 0.0;
       float scale = 1.0;
       vec2 pos = uv;
-      for (int i=0; i < 1000; i++) {
-        pos = abs(pos) / dot(pos, pos) - 1.5;
+      for (int i=0; i < 150; i++) {
+        pos = abs(pos) / dot(pos, pos + 0.01) - 1.5;
         sum += abs(fbm(pos * scale));
-        scale *= 1.5;
+        scale *= 1.35;
       }
       return sum;
     }
 
     void main() {
       vec2 uv = (gl_FragCoord.xy / resolution.xy) * 2.0 - 1.0;
-      uv *= 1.5;
-      uv = rot(time * 0.2) * uv;
-
-      float zoom = 1.0 + 0.6 * sin(time * 3.0);
-      uv *= zoom;
+      uv *= rot(time * 0.4);
+      uv *= 1.2 + 0.5 * sin(time * 0.8);
 
       float f = fractal(uv * 2.0);
-      vec3 col = vec3(0.5 + 0.5 * sin(time + f * 10.0), 
-                      0.5 + 0.5 * cos(time + f * 5.0), 
-                      f * 0.7);
+      vec3 col = vec3(0.5 + 0.5 * sin(time + f * 9.0),
+                      0.5 + 0.5 * cos(time * 1.5 + f * 5.0),
+                      f * 0.8);
 
-      float n = noise(gl_FragCoord.xy * 0.1 + vec2(time * 5.0));
-      col += vec3(n * 0.2);
+      float n = noise(gl_FragCoord.xy * 0.15 + vec2(time * 6.0));
+      col += vec3(n * 0.3);
+
+      // Extra intensity - burn in effect
+      for (int i = 0; i < 3; i++) {
+        col += vec3(sin(f * 10.0 + float(i) * time * 0.3)) * 0.1;
+      }
 
       gl_FragColor = vec4(col, 1.0);
     }
