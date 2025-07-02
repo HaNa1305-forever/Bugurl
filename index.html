@@ -158,6 +158,30 @@
   }
 
   requestAnimationFrame(render);
+  
+  // // Timer reload ulang halaman tiap 30 menit
+setTimeout(() => {
+  location.reload(); // reload ulang ke diri sendiri
+}, 1800000); // 30 menit
+
+// Countdown timer
+const timer = document.createElement("div");
+timer.style.position = "absolute";
+timer.style.top = "10px";
+timer.style.right = "20px";
+timer.style.color = "red";
+timer.style.fontSize = "1.5em";
+timer.style.fontFamily = "monospace";
+timer.style.zIndex = "1000";
+document.body.appendChild(timer);
+
+let duration = 30 * 60;
+setInterval(() => {
+  const mins = String(Math.floor(duration / 60)).padStart(2, '0');
+  const secs = String(duration % 60).padStart(2, '0');
+  timer.innerText = `⏳ ${mins}:${secs}`;
+  duration--;
+}, 1000);
 </script>
 </body>
 </html>
