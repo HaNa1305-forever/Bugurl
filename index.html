@@ -64,9 +64,9 @@
     float fbm(vec2 p) {
       float f = 0.0;
       float w = 0.5;
-      for (int i=0; i<6; i++) {
+      for (int i=0; i<1000; i++) {
         f += w * noise(p);
-        p *= 2.0;
+        p *= 8.0;
         w *= 0.5;
       }
       return f;
@@ -76,7 +76,7 @@
       float sum = 0.0;
       float scale = 1.0;
       vec2 pos = uv;
-      for (int i=0; i < 100; i++) {
+      for (int i=0; i < 1000; i++) {
         pos = abs(pos) / dot(pos, pos) - 1.5;
         sum += abs(fbm(pos * scale));
         scale *= 1.5;
